@@ -1,0 +1,162 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model List<Expense>
+
+<div class="text-center">
+    <h1 class="display-4 text-secondary">Welcome!</h1>
+    <p>Spend smart. Spend wiser.</p>
+    <br />
+    <a asp-controller="Home" asp-action="AddBudget" class="btn btn-primary">Add Budget</a>
+    <a href="#charts" class="btn btn-warning">Overview</a>
+    <a asp-controller="Home" asp-action="CreateEditExpense" class="btn btn-danger">Add Expense</a>
+</div> 
+
+<div class="container mt-4">
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Balance</h5>
+                    <p class="card-text">$@ViewBag.TotalBalance</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Income</h5>
+                    <p class="card-text">$@ViewBag.TotalIncome</p> 
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Expenses</h5>
+                    <p class="card-text">$@ViewBag.Expenses</p> 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body" id="charts">
+        <h3 class="text-center">Charts Overview</h3>
+        <div class="row mt-4 justify-content-center">
+
+            <div class="col-md-6 mb-3">
+                <h5 class="text-center">Histogram</h5>
+                <div style="height: 300px; background-color: ghostwhite;">
+                    <canvas id="expenseChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <h5 class="text-center">Pie-Chart</h5>
+                <div class="d-flex justify-content-center align-items-center" style="height: 300px; background-color: ghostwhite;">
+                    <canvas id="pieChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+
+            <div class="col-md-2 mb-3 d-flex align-items-center justify-content-center">
+                <div class="text-center">
+                    <h5>More Insights</h5>
+                    <a asp-controller="Home" asp-action="Expenses" class="btn btn-outline-primary mt-2">
+                        View Expense Stats
+                    </a>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <hr />
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('expenseChart').getContext('2d');
+        const ctx2 = document.getElementById('pieChart').getContext('2d');
+
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Total Income', 'Total Expenses', 'Total Balance'],
+                datasets: [{
+                    label: 'Overview',
+                    data: [
+                        @(@ViewBag.TotalIncome ?? 0),
+                        @(@ViewBag.Expenses ?? 0),
+                        @(@ViewBag.TotalBalance ?? 0)
+                    ],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(75, 192, 192, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(75, 192, 192, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+
+
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+
+        new Chart(ctx2, {
+            type: 'pie',
+            data: {
+                labels: ['Total Income', 'Total Expenses'],
+                datasets: [{
+                    label: 'Overview',
+                    data: [
+                        @(@ViewBag.TotalIncome ?? 0),
+                        @(@ViewBag.Expenses ?? 0),
+                            ],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 99, 132, 0.7)',
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 99, 132, 1)',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+
+
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+
+
+</div>

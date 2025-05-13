@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Add Budget";
+}
+
+<h1>Add Your Budget</h1>
+
+<form method="post">
+    <div class="form-group w-25">
+        <label for="income">Enter Your Income:</label>
+        <input type="number" class="form-control" id="income" name="income" step="0.01" required />
+    </div>
+
+    <button type="submit" class="mt-3 btn btn-primary">Add Income</button>
+</form>
+
+<br />
+<br />
+
+<div class="d-flex mt-3">
+    <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">Back to Home</a>
+</div>
